@@ -15,8 +15,7 @@ WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 	ClassName db "Class of GUI", 0
 	scan db "button", 0
 	scanfile db  "button", 0
-	
-	
+
 .data?
 	hInstance HINSTANCE ?
 	CommandLine LPSTR ?
@@ -26,7 +25,9 @@ WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 	ButtonID equ 1
 	
 .code
+
 start:
+
 	call IsDebuggerPresent
 	xor eax, eax
 	cmp eax, 1
