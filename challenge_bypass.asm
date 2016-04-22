@@ -4,6 +4,7 @@ option casemap:none
 include \masm32\include\windows.inc
 include \masm32\include\kernel32.inc
 include \masm32\include\user32.inc
+include \masm32\macros\macros.asm
 includelib \masm32\lib\kernel32.lib
 includelib \masm32\lib\user32.lib
 
@@ -14,10 +15,7 @@ WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 	ClassName db "Class of GUI", 0
 	scan db "button", 0
 	scanfile db  "button", 0
-	scanfileText db "Scan particular file", 0
-	scanText db "Scan computer for malware", 0
-	ft db "Bypass me", 0
-	fm db "Try to bypass me!", 0
+	
 	
 .data?
 	hInstance HINSTANCE ?
@@ -30,9 +28,9 @@ WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 .code
 start:
 	call IsDebuggerPresent
-	cmp eax, 1
 	xor eax, eax
-	jmp founddebugger ; next instruction after previous to be executed
+	cmp eax, 1
+	jmp founddebugger
 	mov hInstance, eax
 	push 0
 	call GetModuleHandle
@@ -102,10 +100,10 @@ avgui proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 .if uMsg==WM_DESTROY
 	invoke PostQuitMessage, 0
 .elseif uMsg==WM_CREATE
-	invoke CreateWindowEx, 0, addr scan, addr scanText,\
+	invoke CreateWindowEx, 0, addr scanfile, chr$("Scan particular file"),\
 	WS_CHILD or WS_VISIBLE or BS_DEFPUSHBUTTON,\
 	250, 15, 230, 25, hWnd, ButtonID, hInstance, 0
-	invoke CreateWindowEx, 0, addr scanfile, addr scanfileText,\
+	invoke CreateWindowEx, 0, addr scan ,  chr$("Scan computer for malware"),\
 	WS_CHILD or WS_VISIBLE or BS_DEFPUSHBUTTON,\
 	10, 15, 230, 25, hWnd, ButtonID, hInstance, 0
 .else
@@ -121,7 +119,7 @@ avgui proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 avgui endp
 
 founddebugger:
-	invoke MessageBox, 0, addr fm, addr ft, MB_ICONERROR
+	invoke MessageBox, 0, chr$("Debugger found"), chr$("Debugger detected"), MB_ICONERROR
 	invoke ExitProcess, 0
 
 end start
