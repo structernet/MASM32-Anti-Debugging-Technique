@@ -26,7 +26,7 @@ WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 	
 .code
 
-start:
+_start:
 
 	call IsDebuggerPresent
 	xor eax, eax
@@ -51,7 +51,7 @@ start:
 	
 	mov wc.cbSize, SIZEOF WNDCLASSEX
 	mov wc.style, CS_HREDRAW or CS_VREDRAW
-	mov wc.lpfnWndProc, offset avgui
+	mov wc.lpfnWndProc, offset AvWinGui
 	mov wc.hbrBackground, COLOR_BTNFACE+1
 	mov wc.cbClsExtra, 0
 	mov wc.cbWndExtra, 0
@@ -97,7 +97,7 @@ start:
 	RET
 WinMain endp
 
-avgui proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
+AvWinGui proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 .if uMsg==WM_DESTROY
 	invoke PostQuitMessage, 0
 .elseif uMsg==WM_CREATE
@@ -117,12 +117,12 @@ avgui proc hWnd:HWND, uMsg:UINT, wParam:WPARAM, lParam:LPARAM
 	.endif
 	xor eax, eax
 	RET
-avgui endp
+AvWinGui endp
 
 founddebugger:
 	invoke MessageBox, 0, chr$("Debugger found"), chr$("Debugger detected"), MB_ICONERROR
 	invoke ExitProcess, 0
 
-end start
+end _start
 
 
