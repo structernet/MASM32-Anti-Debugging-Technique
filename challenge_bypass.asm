@@ -11,7 +11,7 @@ includelib \masm32\lib\user32.lib
 WinMain proto :DWORD,:DWORD,:DWORD,:DWORD
 
 .data
-	AppName db "Nightware Neptuna Antivirus Challenge", 0
+	AppName db "Sample Neptuna Antivirus Challenge", 0
 	ClassName db "Class of GUI", 0
 	scan db "button", 0
 	scanfile db  "button", 0
